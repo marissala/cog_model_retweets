@@ -1,12 +1,14 @@
 model {
 
   # --------------------------priors---------------------------------------------
-  for (n in 1:nagents) {
-    # sensitivity/discriminability for news topic - represents knowledge
-    kappa[n] ~ dunif(0,20) 
+  for (i in 1:ntopics) {
+    for (n in 1:nagents) {
+      # sensitivity/discriminability for news topic - represents knowledge
+      kappa[i,n] ~ dunif(0,20) 
   
-    # skepticism - tendency to disagree with topic independent of knowledge - bias
-    beta[n] ~ dunif(0,1) 
+      # skepticism - tendency to disagree with topic independent of knowledge - bias
+      beta[i,n] ~ dunif(0,1) 
+    }
   }
 
   # topic filter matrix - quantification of topic engagement
@@ -34,7 +36,7 @@ model {
       # strength of topic for each agent - select filter value from tau matrix
       chi[1,n,d] <- tau[x[d],n] 
       # probability of retransmitting - logistic function
-      psy[1,n,d] <- 1/(1+exp(-kappa[n]*(chi[1,n,d]-beta[n])))
+      psy[1,n,d] <- 1/(1+exp(-kappa[x[d],n]*(chi[1,n,d]-beta[x[d],n])))
       # choice to transmit
       X[1,n,d] ~ dbern(psy[1,n,d])
     }
@@ -43,7 +45,7 @@ model {
     for (t in 2:ntimesteps) {
       for (n in 1:nagents) {
         chi[t,n,d] <- sum(omega[n,]*X[t-1,,d])/nagents
-        psy[t,n,d] <- 1/(1+exp(-kappa[n]*(chi[t,n,d]-beta[n])))
+        psy[t,n,d] <- 1/(1+exp(-kappa[x[d],n]*(chi[t,n,d]-beta[x[d],n])))
         X[t,n,d] ~ dbern(psy[t,n,d])
       }
     }
