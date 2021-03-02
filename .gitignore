@@ -2,3 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
+*.csv
+.RDataTmp
+.ipynb_checkpoints/
+twitter_handles/
