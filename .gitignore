@@ -6,3 +6,4 @@
 .RDataTmp
 .ipynb_checkpoints/
 twitter_handles/
+*.RData
