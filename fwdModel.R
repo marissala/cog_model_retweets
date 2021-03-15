@@ -5,6 +5,7 @@ library(beepr)
 pacman::p_load(extraDistr, R2jags, polspline)
 library(polspline)
 
+
 start_time = Sys.time()
 
 nagents <- 5
@@ -102,16 +103,16 @@ beep(sound = 1)
 ## Plugging in some of my own data
 
 X = dataframe
-topics_df = read.csv("test_topics_RT_overand_6.csv")
+topics_df = read.csv("test_topics_RT_overand_5.csv")
 topics = topics_df["topic"]
 #x <- c(x[,1])
 topics = topics[[1]]
 length(unique(topics))
 
 ntimesteps <- 8
-nagents <- 36
-ndocuments <- 10
-ntopics <- 10
+nagents <- 64
+ndocuments <- 34
+ntopics <- 22
 
 
 x <- array(0, c(ndocuments))
@@ -172,22 +173,22 @@ d_theta <- density(beta_infer[,3,])
 plot(d_theta, main="Beta - skepticism")
 polygon(d_theta, col="lightblue", border="lightblue")
 
-par(mfrow=c(3,ntopics))
-for (i in 1:ntopics){
+par(mfrow=c(3,5))
+for (i in 1:5){
   d_a <- density(tau_infer[,i,])
   plot(d_a, main="Tau - topic interest")
   polygon(d_a, col="lightblue", border="lightblue")
 }
 
 #par(mfrow=c(2,ntopics))
-for (i in 1:ntopics){
+for (i in 1:5){
   d_a <- density(kappa_infer[,i,])
   plot(d_a, main="Kappa - knowledge")
   polygon(d_a, col="lightblue", border="lightblue")
 }
 
 #par(mfrow=c(2,ntopics))
-for (i in 1:ntopics){
+for (i in 1:5){
   d_a <- density(beta_infer[,i,])
   plot(d_a, main="Beta - skepticism")
   polygon(d_a, col="lightblue", border="lightblue")
@@ -198,7 +199,7 @@ median(omega_infer)
 median(kappa_infer)
 median(beta_infer)
 
-save.image(file='RT_cog_model.RData')
+save.image(file='RT_5_cog_model.RData')
 
 ########################################################################
 ########################Added figures ##################################
